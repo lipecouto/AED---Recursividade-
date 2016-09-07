@@ -1,0 +1,216 @@
+class MainClass
+	{   // AED - Aula 1 Matéria RECURSIVIDADE;
+		// Encontrar a Base
+		// Acha a regra
+		// Sempre que uma função recursiva começa uma recursão ele pausa a execução em camadas de acordo com a quantidade da recursividade.
+
+		static int[] vetRand()
+		{
+			Random num = new Random(1024);
+
+			int[] vet = new int[1000000];
+
+			for (int i = 0; i < 1000000; i++)
+				vet[i] = num.Next(1, 1200001);
+
+			Array.Sort(vet);
+
+			return vet;
+		}
+
+		public int fatorial_r(int valor){
+			if (valor == 0) // regra de parada da função, nesse caso o fatorial de 0 é um e não temos mais que realizar o calculo do fatorial.
+				return 1;
+			else
+				return valor * fatorial_r(valor-1);
+		}
+
+		public int fatorial_nr(int valor){
+			
+			for(int i = valor - 1 ; i > 1; i --)
+			{  
+				valor *= i;
+			}
+			return valor;
+		}
+
+		public int fibonacci_nr(int pos){ // Definir a recursividade da série de Fibonacci
+			//escrita sem recursividade
+			int aux1 = 1; int aux2 = 1; int res = 1;
+			for (int i = 3; i <= pos; i++) {
+				res = aux1 + aux2;
+				aux1 = aux2;
+				aux2 = res;
+			}
+			return res;
+		}
+
+		/* Definição de fibonacci recursivo
+		 * fibo(n) = { 1, se N <= 2
+		 * 			 { fibo(n-1) + fibo(n-2), se N > 2
+		 */
+
+		public int fibonacci_r(int pos){
+			if (pos <= 2)
+				return 1;
+			else {
+				return fibonacci_r (pos - 1) + fibonacci_r (pos - 2);
+			}
+
+		}
+
+
+		/*
+			 * Exercicios 
+			 *  Fazer uma função recursiva que verifique o valor quadrado de um numero
+		 	 *  Fazer uma função que faz o calculo de uma soma
+			 */
+
+		public int potencia_r(int expo, int bases){
+
+			if (expo == 0)
+				return 1;
+			else 
+				return bases * potencia_r(expo -1, bases);
+
+		}
+
+		public int multiplica (int multiplicador, int multiplicando){
+				
+			if (multiplicador == 1)
+				return multiplicando;
+			else if (multiplicador == 0 || multiplicando == 0)
+				return 0;
+			else
+				return multiplicando + multiplica (multiplicador - 1, multiplicando);
+		}
+
+		public int retornaMenor(int []vetor, int pos){ // Função para retornar o menor valor da posição de um vetor.
+			//int menor = 0;
+			if (pos == 0)
+				return vetor [0];
+			else {
+				if (retornaMenor(vetor, pos-1) < vetor[pos])
+					return retornaMenor (vetor, pos - 1);
+				else
+					return vetor [pos];
+			}
+
+		}
+
+
+		// Escreva um metodo que recursivo que calcule o valor da serie (1/2) + (3/4) + (5/6) ... + (n-1)/n 
+		// obs:. o nro N a ser lido deve ser sempre par.
+
+		// serie: se n == 2, serie = 1/2
+		//		  senao serie = ((n-1)/n )+ serie(n-2)
+		public double serieSoma(double n){
+			if (n <= 1)
+				return n;
+			else
+				return ((n - 1) / n) + serieSoma (n - 2);
+			
+		}
+
+		public double serieSoma_nr(int n){
+			double x = n;
+			for(int i = n; i > 0; i--){
+				x = ((x - 1) / x) + ((x - 2) / (x - 1)); 
+			}
+
+			return x;
+		}
+
+		//challenge: Faça um algoritimo recursivo que conte quantos números pares há em um vetor;
+		//dica: contar e somar ++
+
+		public int contaVet(int []vetor, int pos, int contador){
+			
+			if (pos == 0) {
+				if (vetor [0] % 2 == 0)
+					return contador = contador++;
+				else
+					return contador;
+
+			}
+			else {
+				if (vetor [pos] % 2 == 0) {
+					contador = contador++;
+					return contaVet(vetor, pos-1, contador);
+				}
+				else
+					return contaVet(vetor, pos-1, contador);
+					
+				}
+				
+		}
+
+		//Recursividade sem cauda
+		/* O exemplo abaixo faz a inversão do de uma string?
+		 * 
+		 * public static void inverter(){
+		 * 	char letra;
+		 * 	letra = Console.ReadKey().KeyChar; -- Verifica a entrada no teclado.
+		 * 	if(letra != '\r'){  -- Se não houver um "enter" no teclado entra na condição do IF
+		 * 		inverter(); 	-- Chama a função inverter e impilha a letra que o computador pegou anteriormente, ele vai fazer isso para cada letra encontrada ou seja o progama fica aqui até a
+		 *						-- condição do if seja valida ele vai sair da recursividade e vai imprimir as letras na ordem em que elas foram empilhadas ou seja L A C, porque vai continuar 
+		 *						-- o codigo a partir da proxima linha.
+		 *
+		 * 		Console.Write(letra); 
+		 * 	}
+		 * }
+		 */
+
+		public static void hanoi(int n, char t1, char t2, char t3, int contador){
+			//fazer algoritmo sem cauda para resolver torre de hanoi
+			if (n == 1) {
+				contador = contador + 1;
+				Console.WriteLine ("Peça movida para torre 3");
+			}
+			else {
+				contador = contador + 1;
+				hanoi (n - 1, t1, t2, t3, contador);
+				hanoi (1, t1, t3, t2, contador);
+				hanoi (n - 1, t2, t3, t1, contador);
+			}
+			Console.WriteLine("Foram realizados {0} movimentos", contador);
+			
+		}
+
+		 //recursividade para uma pesquisa binária.
+			/* observar regras
+			 * Se inicio > fim
+			 * Se elemento(meio) == busca
+			 * Se busca > elemento(meio), buscar do (meio+1) até o fim
+			 * Se busca < elemento(meio), buscar do inicio até (meio-1)
+			 * 
+			 * 
+			 * S(n) = S(n/2^i) + i - Suposição matemática, a operação contraria de uma potencia é sempre logaritmo
+			 */ 
+	
+		public  int buscaSequencia(int []vet, int pos, int valor, ref int contador){
+			contador++;
+			if (pos == 0)
+				return vet [0];
+			else {
+				if (vet [pos] == valor)
+					return vet [pos];
+				else
+					return buscaSequencia (vet, pos - 1, valor);
+			}
+		}
+
+		public int buscaBinaria(int[] lista, int max, int min, int chave, ref int contador)
+		{
+			int meio = (min + max) / 2;
+			int buscaValor = lista[meio];
+			contador++;
+			if (min > max)
+				return -1;
+			else if (lista[meio]== chave)
+				return meio;
+			else if (lista[meio] > chave)
+				return buscaBinaria(lista, chave, min, (meio - 1), chave);
+			else
+				return buscaBinaria(lista, chave, (meio + 1), chave);
+		}
